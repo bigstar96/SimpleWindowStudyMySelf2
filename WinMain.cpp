@@ -77,6 +77,28 @@ int WINAPI WinMain(
 
 }
 
+void OnPaint(HWND hwnd)
+{
+	PAINTSTRUCT ps;
+
+	HDC hdc = BeginPaint(hwnd, &ps);
+
+	HPEN bluePen = CreatePen(PS_DOT, 1, RGB(0, 0, 255));
+	HPEN oldPen = (HPEN)SelectObject(hdc, bluePen);
+	MoveToEx(hdc, 0, 110, nullptr);
+	LineTo(hdc, 100, 110);
+	DeleteObject(bluePen);
+	SelectObject(hdc, oldPen);
+
+	HBRUSH hatchBrush = CreateHatchBrush(HS_CROSS, RGB(255, 0, 0));
+	HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, hatchBrush);
+	Rectangle(hdc, 0, 0, 100, 100);
+	DeleteObject(hatchBrush);
+	SelectObject(hdc, oldBrush);
+
+	EndPaint(hwnd, &ps);
+}
+
 // 4단계 - 윈도우 프로시져 작성
 LRESULT CALLBACK WindowProc(
 	HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
@@ -92,27 +114,12 @@ LRESULT CALLBACK WindowProc(
 		PostQuitMessage(0);
 		break;
 
-	case WM_LBUTTONDOWN:
+	//case WM_ERASEBKGND:
+	//	break;
+	
+	case WM_PAINT:
 	{
-		std::wostringstream oss;
-
-		oss << "X : " << LOWORD(lParam) <<
-			", Y : " << HIWORD(lParam);
-
-		MessageBox(
-			hWnd, oss.str().c_str(),
-			L"마우스 왼쪽 클릭!", MB_OK
-		);
-		break;
-	}
-
-	case WM_KEYDOWN:
-	{
-		std::wostringstream oss;
-
-		oss << "virtual Key = " << wParam <<
-			", Extra = " << std::hex << lParam << std::endl;
-		OutputDebugString(oss.str().c_str());
+		OnPaint(hWnd);
 		break;
 	}
 
