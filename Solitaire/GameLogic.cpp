@@ -114,7 +114,7 @@ namespace solitaire
 		std::vector<Type> types;
 		while (types.size() < static_cast<size_t>(BOARD_COLUMN * BOARD_ROW))
 		{
-			int modulator = types.size() & 6;
+			int modulator = types.size() % 6;
 			switch (modulator)
 			{
 			case 0:
@@ -131,6 +131,7 @@ namespace solitaire
 				types.push_back(Type::Dragon);
 				types.push_back(Type::Dragon);
 				break;
+
 			}
 		}
 
@@ -149,8 +150,8 @@ namespace solitaire
 				mDeck.push_back(Card(mHwnd, index, types[index++], posX, posY));
 				posY += 140 + 10;
 			}
-
 			posX += 100 + 10;
 		}
+
 	}
 }

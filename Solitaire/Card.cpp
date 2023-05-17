@@ -43,11 +43,11 @@ namespace solitaire
 
 			return true;
 		}
-			*/
+		*/
 
 		Gdiplus::Rect rct(mX, mY, mFront->GetWidth(), mFront->GetHeight());
 
-		if (rct.Contains(x,y))
+		if (rct.Contains(x, y))
 		{
 			Flip(!mIsFront);
 

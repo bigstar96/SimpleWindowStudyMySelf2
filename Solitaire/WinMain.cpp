@@ -1,12 +1,14 @@
 #include <Windows.h>
-
+#include <gdiplus.h>
+#include <list>
+#include "Card.h"
 #include "GameLogic.h"
 
 #pragma comment (lib, "Gdiplus.lib")
 
 const wchar_t gClassName[] = L"MyWindowClass";
 
-std::list<solitaire::Card> myDeck;
+//std::list<solitaire::Card> myDeck;
 solitaire::GameLogic gLogic;
 
 LRESULT CALLBACK WindowProc(
@@ -25,9 +27,10 @@ int WINAPI WinMain(
 
 	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 
-	//myDeck.push_back(solitaire::Card(solitaire::Type::Bear, 0, 0));
-	//myDeck.push_back(solitaire::Card(solitaire::Type::Wolf, 120, 0));
-	//myDeck.push_back(solitaire::Card(solitaire::Type::Dragon, 240, 0));
+	/*myDeck.push_back(solitaire::Card(solitaire::Type::Bear, 0, 0));
+	myDeck.push_back(solitaire::Card(solitaire::Type::Wolf, 120, 0));
+	myDeck.push_back(solitaire::Card(solitaire::Type::Dragon, 240, 0));*/
+	
 
 	HWND hWnd;
 	WNDCLASSEX wc;
@@ -90,9 +93,8 @@ int WINAPI WinMain(
 	}
 
 	gLogic.Release();
-	myDeck.clear();
-	Gdiplus::GdiplusShutdown(gdiplusToken);
 
+	Gdiplus::GdiplusShutdown(gdiplusToken);
 	return msg.wParam;
 }
 
@@ -103,10 +105,11 @@ void OnPaint(HWND hwnd)
 	hdc = BeginPaint(hwnd, &ps);
 	Gdiplus::Graphics graphics(hdc);
 
-	for (auto& card : myDeck)
+	/*for (auto& card : myDeck)
 	{
 		card.Draw(graphics);
-	}
+	}*/
+
 	gLogic.Draw(graphics);
 
 	EndPaint(hwnd, &ps);
@@ -136,9 +139,6 @@ LRESULT CALLBACK WindowProc(
 
 	default:
 		return DefWindowProc(hwnd, message, wParam, lParam);
-		break;
 	}
-
 	return 0;
 }
-
