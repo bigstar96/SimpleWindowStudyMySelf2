@@ -1,12 +1,5 @@
 #include <Windows.h>
 
-#include <gdiplus.h>
-#pragma comment (lib, "Gdiplus.lib")
-
-using namespace Gdiplus;
-
-#include <sstream>
-
 const wchar_t gClassName[] = L"MyWindowClass";
 
 LRESULT CALLBACK WindowProc(
@@ -20,10 +13,6 @@ int WINAPI WinMain(
 	_In_ int nShowCmd
 )
 {
-	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR gdiplusToken;
-	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
-
 	HWND hWnd;
 	WNDCLASSEX wc;
 
@@ -85,9 +74,8 @@ int WINAPI WinMain(
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-	Gdiplus::GdiplusShutdown(gdiplusToken);
-	return static_cast<int>(msg.wParam);
 
+	return static_cast<int>(msg.wParam);
 }
 
 void OnPaint(HWND hwnd)
@@ -96,28 +84,6 @@ void OnPaint(HWND hwnd)
 	PAINTSTRUCT ps;
 
 	hdc = BeginPaint(hwnd, &ps);
-	Graphics graphics(hdc);
-
-	/*Pen pen(Color(255, 0, 0, 255));
-	graphics.DrawLine(&pen, 0, 0, 100, 100);
-
-	SolidBrush brush(Color(255, 255, 0, 255));
-	FontFamily fontFamily(L"∏º¿∫ ∞ÌµÒ");
-	Font font(&fontFamily, 24, FontStyleRegular, UnitPixel);
-	PointF pointF(0.0f, 110.0f);
-	graphics.DrawString(L"∏º¿∫ ∞ÌµÒ¿‘¥œ¥Ÿ.", -1, &font, pointF, &brush);*/
-
-	Image image(L"hummingbirds.png");
-	
-	int x = ps.rcPaint.left;
-	int y = ps.rcPaint.top;
-	int w = ps.rcPaint.right - ps.rcPaint.left;
-	int h = ps.rcPaint.bottom - ps.rcPaint.top;
-
-	graphics.DrawImage(&image, x, y, w, h);
-
-	Image image2(L"Bluebutterfly.jpg");
-	graphics.DrawImage(&image2, 120, 10, image2.GetWidth(), image2.GetHeight());
 	
 
 	EndPaint(hwnd, &ps);
@@ -130,6 +96,10 @@ LRESULT CALLBACK WindowProc(
 {
 	switch (message)
 	{
+	case WM_PAINT:
+		OnPaint(hWnd);
+		break;
+	
 	case WM_CLOSE:
 		DestroyWindow(hWnd);
 		break;
@@ -138,17 +108,9 @@ LRESULT CALLBACK WindowProc(
 		PostQuitMessage(0);
 		break;
 
-	//case WM_ERASEBKGND:
-	//	break;
-	
-	case WM_PAINT:
-	{
-		OnPaint(hWnd);
-		break;
-	}
-
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
+
 	return 0;
 }
