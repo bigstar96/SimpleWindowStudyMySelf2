@@ -1,21 +1,24 @@
 #include <Windows.h>
-#include <d2d1.h>
 
-#include <math.h>
+//#include <d2d1.h>
+//#include <math.h>
+//#pragma comment	(lib, "d2d1.lib")
 
-#pragma comment	(lib, "d2d1.lib")
+#include "D2DFramework.h"
 
 const wchar_t gClassName[]{ L"MyWindowClass" };
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 // 0. D2D 전역 변수들
-ID2D1Factory* gpD2DFactory{};
-ID2D1HwndRenderTarget* gpRenderTarget{};
-ID2D1SolidColorBrush* gpBrush{};
-ID2D1RadialGradientBrush* gpRadialBrush{};
+//ID2D1Factory* gpD2DFactory{};
+//ID2D1HwndRenderTarget* gpRenderTarget{};
+//ID2D1SolidColorBrush* gpBrush{};
+//ID2D1RadialGradientBrush* gpRadialBrush{};
 
-void OnPaint(HWND hwnd);
+//void OnPaint(HWND hwnd);
+
+D2DFramework myFramework;
 
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
@@ -63,6 +66,9 @@ int WINAPI WinMain(
 		return 0;
 	}
 
+	myFramework.Init(hwnd);
+
+	/*
 	// 1. D2D Factory 만들기
 	HRESULT hr = D2D1CreateFactory(
 		D2D1_FACTORY_TYPE_SINGLE_THREADED, &gpD2DFactory
@@ -124,6 +130,7 @@ int WINAPI WinMain(
 			&gpRadialBrush
 		);
 	}
+	*/
 
 	ShowWindow(hwnd, nShowCmd);
 	UpdateWindow(hwnd);
@@ -149,10 +156,12 @@ int WINAPI WinMain(
 		}
 		else
 		{
-			OnPaint(hwnd);
+			//OnPaint(hwnd);
+			myFramework.Render();
 		}
 	}
 
+	/*
 	// 4. 해제
 	if (gpBrush)
 	{
@@ -185,10 +194,14 @@ int WINAPI WinMain(
 		gpBrush->Release();
 		gpBrush = nullptr;
 	}
+	*/
+
+	myFramework.Release();
 
 	return static_cast<int>(msg.wParam);
 }
 
+/*
 void OnPaint(HWND hwnd)
 {
 	HDC hdc;
@@ -200,19 +213,19 @@ void OnPaint(HWND hwnd)
 	gpRenderTarget->BeginDraw();
 	gpRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
 
-	/*gpBrush->SetOpacity(1.0f);
-	gpBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Aquamarine));
-	gpRenderTarget->FillRectangle(
-		D2D1::RectF(0.0f, 0.0f, 100.0f, 100.0f),
-		gpBrush
-	);
+	//gpBrush->SetOpacity(1.0f);
+	//gpBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Aquamarine));
+	//gpRenderTarget->FillRectangle(
+	//	D2D1::RectF(0.0f, 0.0f, 100.0f, 100.0f),
+	//	gpBrush
+	//);
 
-	gpBrush->SetOpacity(0.5f);
-	gpBrush->SetColor(D2D1::ColorF(D2D1::ColorF::LightYellow));
-	gpRenderTarget->FillRectangle(
-		D2D1::RectF(50.0f, 50.0f, 150.0f, 150.0f),
-		gpBrush
-	);*/
+	//gpBrush->SetOpacity(0.5f);
+	//gpBrush->SetColor(D2D1::ColorF(D2D1::ColorF::LightYellow));
+	//gpRenderTarget->FillRectangle(
+	//	D2D1::RectF(50.0f, 50.0f, 150.0f, 150.0f),
+	//	gpBrush
+	//);
 
 	gpRenderTarget->FillRectangle(
 		D2D1::RectF(0.0f, 0.0f, 100.0f, 100.0f),
@@ -230,17 +243,22 @@ void OnPaint(HWND hwnd)
 
 	gpRenderTarget->EndDraw();
 
+
+
 	EndPaint(hwnd, &ps);
 }
+*/
+
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+		/*
 	case WM_PAINT:
 		OnPaint(hwnd);
 		break;
-
+		*/
 	case WM_CLOSE:
 		DestroyWindow(hwnd);
 		break;
@@ -255,3 +273,4 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 
 	return 0;
 }
+
