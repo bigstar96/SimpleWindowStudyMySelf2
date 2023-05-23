@@ -62,26 +62,12 @@ HRESULT D2DFramework::InitD2D(HWND hwnd)
 	);
 	ThrowIfFailed(hr);
 
-	/*
-	// 2. RenderTarget 持失
-	RECT rc;
-	GetClientRect(hwnd, &rc);
-	hr = mspD2DFactory->CreateHwndRenderTarget(
-		D2D1::RenderTargetProperties(),
-		D2D1::HwndRenderTargetProperties(
-			hwnd,
-			D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top)
-		),
-		mspRenderTarget.GetAddressOf()
-	);
-	ThrowIfFailed(hr);
-	*/
-
 	return CreateDeviceResources();
 }
 
 HRESULT D2DFramework::CreateDeviceResources()
 {
+	// 2. Render Target 持失
 	RECT rc;
 	GetClientRect(mHwnd, &rc);
 	HRESULT hr = mspD2DFactory->CreateHwndRenderTarget(
@@ -151,7 +137,6 @@ int D2DFramework::GameLoop()
 		}
 		else
 		{
-			//OnPaint(hwnd);
 			Render();
 		}
 	}
