@@ -6,9 +6,9 @@
 
 #include "D2DFramework.h"
 
-const wchar_t gClassName[]{ L"MyWindowClass" };
+//const wchar_t gClassName[]{ L"MyWindowClass" };
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+//LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 // 0. D2D 전역 변수들
 //ID2D1Factory* gpD2DFactory{};
@@ -27,7 +27,7 @@ int WINAPI WinMain(
 	_In_ int nShowCmd
 )
 {
-	WNDCLASSEX wc;
+	/*WNDCLASSEX wc;
 
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 	wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -37,6 +37,7 @@ int WINAPI WinMain(
 	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
 	wc.lpfnWndProc = WindowProc;
 	wc.cbSize = sizeof(WNDCLASSEX);
+
 	if (!RegisterClassEx(&wc))
 	{
 		MessageBox(NULL, L"Failed To Register", L"Error", MB_OK);
@@ -64,9 +65,28 @@ int WINAPI WinMain(
 	{
 		MessageBox(NULL, L"Failed to create", L"Error", MB_OK);
 		return 0;
+	}*/
+
+	//myFramework.Init(hwnd);
+
+	int result;
+
+	try
+	{
+		myFramework.Initialize(hInstance);
+
+		result = myFramework.GameLoop();
+	}
+	catch (com_exception& e)
+	{
+		OutputDebugStringA(e.what());
+	}
+	catch (std::exception e)
+	{
+
 	}
 
-	myFramework.Init(hwnd);
+	return result;
 
 	/*
 	// 1. D2D Factory 만들기
@@ -132,8 +152,8 @@ int WINAPI WinMain(
 	}
 	*/
 
-	ShowWindow(hwnd, nShowCmd);
-	UpdateWindow(hwnd);
+	/*ShowWindow(hwnd, nShowCmd);
+	UpdateWindow(hwnd);*/
 
 	/*MSG msg;
 	while (GetMessage(&msg, NULL, 0,0))
@@ -142,24 +162,24 @@ int WINAPI WinMain(
 		DispatchMessage(&msg);
 	}*/
 
-	MSG msg{};
-	while (true)
-	{
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-			if (msg.message == WM_QUIT)
-			{
-				break;
-			}
-		}
-		else
-		{
-			//OnPaint(hwnd);
-			myFramework.Render();
-		}
-	}
+	//MSG msg{};
+	//while (true)
+	//{
+	//	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	//	{
+	//		TranslateMessage(&msg);
+	//		DispatchMessage(&msg);
+	//		if (msg.message == WM_QUIT)
+	//		{
+	//			break;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		//OnPaint(hwnd);
+	//		myFramework.Render();
+	//	}
+	//}
 
 	/*
 	// 4. 해제
@@ -196,9 +216,9 @@ int WINAPI WinMain(
 	}
 	*/
 
-	myFramework.Release();
+	//myFramework.Release();
 
-	return static_cast<int>(msg.wParam);
+	// return static_cast<int>(msg.wParam);
 }
 
 /*
@@ -249,16 +269,16 @@ void OnPaint(HWND hwnd)
 }
 */
 
-
+/*
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
-		/*
-	case WM_PAINT:
-		OnPaint(hwnd);
-		break;
-		*/
+		
+	//case WM_PAINT:
+	//	OnPaint(hwnd);
+	//	break;
+		
 	case WM_CLOSE:
 		DestroyWindow(hwnd);
 		break;
@@ -273,4 +293,5 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 
 	return 0;
 }
+*/
 
