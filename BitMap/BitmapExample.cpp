@@ -31,7 +31,10 @@ void BitmapExample::Render()
 
 	ClearBuffer(D2D1::ColorF(D2D1::ColorF::LightPink));
 
-	FillRectToBuffer(100, 100, 100, 100, D2D1::ColorF::Blue);
+	//FillRectToBuffer(100, 100, 100, 100, D2D1::ColorF::Blue);
+	FillRectToBuffer(0, 0, 100, 100, D2D1::ColorF::Red);
+	FillRectToBuffer(50, 50, 100, 100, D2D1::ColorF(0, 1, 0, 0.5f));
+
 
 	PresentBuffer();
 
@@ -68,9 +71,19 @@ void BitmapExample::DrawPixelToBuffer(int x, int y, D2D1::ColorF color)
 	int pitch = BITMAP_WIDTH * BITMAP_BYTECOUNT;
 	int index = pitch * y + x * BITMAP_BYTECOUNT;
 
-	mspBackBuffer[index] = static_cast<UINT8>(color.r * 255);
+	float inverse = 1.0f - color.a;
+	UINT8 red2 = static_cast<UINT8>(color.r * 255);
+	UINT8 green2 = static_cast<UINT8>(color.g * 255);
+	UINT8 blue2 = static_cast<UINT8>(color.b * 255);
+
+	/*mspBackBuffer[index] = static_cast<UINT8>(color.r * 255);
 	mspBackBuffer[index + 1] = static_cast<UINT8>(color.g * 255);
 	mspBackBuffer[index + 2] = static_cast<UINT8>(color.b * 255);
+	mspBackBuffer[index + 3] = static_cast<UINT8>(color.a * 255);*/
+
+	mspBackBuffer[index] = static_cast<UINT8>(mspBackBuffer[index] * inverse + red2 * color.a);
+	mspBackBuffer[index + 1] = static_cast<UINT8>(mspBackBuffer[index + 1] * inverse + green2 * color.a);
+	mspBackBuffer[index + 2] = static_cast<UINT8>(mspBackBuffer[index + 2] * inverse + blue2 * color.a);
 	mspBackBuffer[index + 3] = static_cast<UINT8>(color.a * 255);
 }
 
@@ -84,3 +97,4 @@ void BitmapExample::FillRectToBuffer(int left, int top, int width, int height, D
 		}
 	}
 }
+

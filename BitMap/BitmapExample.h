@@ -22,8 +22,7 @@ public:
 	void ClearBuffer(D2D1::ColorF color);
 	void PresentBuffer();
 	void DrawPixelToBuffer(int x, int y, D2D1::ColorF color);
-	void FillRectToBuffer(
-		int left, int top, int width, int height, D2D1::ColorF color
-	);
+	void FillRectToBuffer(int left, int top, int width, int height, D2D1::ColorF color);
+
 };
 
