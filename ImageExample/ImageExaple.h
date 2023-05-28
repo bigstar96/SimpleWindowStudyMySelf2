@@ -1,8 +1,12 @@
 #pragma once
+
+#include <wincodec.h>
+
 #include "D2DFramework.h"
 class ImageExaple : public D2DFramework
 {
-	Microsoft::WRL::ComPtr<ID2D1Bitmap>	mspBitmap{};
+	Microsoft::WRL::ComPtr<IWICImagingFactory>	mspWICFactory;
+	Microsoft::WRL::ComPtr<ID2D1Bitmap>			mspBitmap;
 
 public:
 	virtual HRESULT Initialize(
@@ -14,7 +18,9 @@ public:
 
 
 	void Render() override;
+	void Release() override;
 
 	HRESULT LoadBMP(LPCWSTR filename, ID2D1Bitmap** ppBitmap);
+	HRESULT LoadWICImage(LPCWSTR filename, ID2D1Bitmap** ppBitmap);
 };
 
