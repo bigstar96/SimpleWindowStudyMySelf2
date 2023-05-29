@@ -1,8 +1,8 @@
 #include "D2DFramework.h"
 #include <sstream>
+#include "BitmapManager.h"
 
 #pragma comment	(lib, "d2d1.lib")
-#pragma comment (lib, "WindowsCodecs.lib")
 
 HRESULT D2DFramework::InitWindow(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
@@ -59,14 +59,6 @@ HRESULT D2DFramework::InitD2D(HWND hwnd)
 {
 	HRESULT hr;
 
-	hr = CoCreateInstance(
-		CLSID_WICImagingFactory, 
-		nullptr, 
-		CLSCTX_INPROC_SERVER, 
-		IID_PPV_ARGS(mspWICFactory.GetAddressOf())
-	);
-	ThrowIfFailed(hr);
-
 	// 1. D2D Factory ¸¸µé±â
 	hr = D2D1CreateFactory(
 		D2D1_FACTORY_TYPE_SINGLE_THREADED, mspD2DFactory.GetAddressOf()
@@ -107,6 +99,9 @@ HRESULT D2DFramework::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width,
 	hr = InitD2D(mHwnd);
 	ThrowIfFailed(hr);
 
+	hr = BitmapManager::Instance().Initialize(mspRenderTarget.Get());
+	ThrowIfFailed(hr, "Failed to Initialize BitmapManager");
+
 	ShowWindow(mHwnd, SW_SHOW);
 	UpdateWindow(mHwnd);
 
@@ -115,9 +110,10 @@ HRESULT D2DFramework::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width,
 
 void D2DFramework::Release()
 {
+	BitmapManager::Instance().Release();
+
 	mspRenderTarget.Reset();
 	mspD2DFactory.Reset();
-	mspWICFactory.Reset();
 
 	CoUninitialize();
 }
@@ -193,12 +189,4 @@ LRESULT CALLBACK D2DFramework::WindowProc(HWND hwnd, UINT message, WPARAM wParam
 	}
 
 	return 0;
-}
-
-inline void ThrowIfFailed(HRESULT hr)
-{
-	if (FAILED(hr))
-	{
-		throw com_exception(hr);
-	}
 }

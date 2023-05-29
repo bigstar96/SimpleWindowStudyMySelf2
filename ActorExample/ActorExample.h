@@ -2,6 +2,8 @@
 #include "D2DFramework.h"
 #include "Actor.h"
 #include <vector>
+#include <memory>
+#include "ComException.h"
 
 class ActorExample : public D2DFramework
 {

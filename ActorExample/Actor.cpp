@@ -1,10 +1,12 @@
 #include "Actor.h"
+#include "ComException.h"
+#include "BitmapManager.h"
 
 Actor::Actor(D2DFramework* pFramework, LPCWSTR filename) :
 	mpFramework{ pFramework },
 	mX{}, mY{}, mOpacity{ 1.0f }
 {
-	LoadWICImage(filename);
+	mpBitmap = BitmapManager::Instance().LoadBitmapW(filename);
 }
 
 Actor::Actor(D2DFramework* pFramework, LPCWSTR filename, float x, float y, float opacity) : Actor(pFramework, filename)
@@ -16,7 +18,6 @@ Actor::Actor(D2DFramework* pFramework, LPCWSTR filename, float x, float y, float
 
 Actor::~Actor()
 {
-	mspBitmap.Reset();
 }
 
 void Actor::Draw()
@@ -24,6 +25,7 @@ void Actor::Draw()
 	Draw(mX, mY, mOpacity);
 }
 
+/*
 HRESULT Actor::LoadWICImage(LPCWSTR filename)
 {
 	// decoder
@@ -74,17 +76,18 @@ HRESULT Actor::LoadWICImage(LPCWSTR filename)
 	// bitmap
 	hr = pRT->CreateBitmapFromWicBitmap(
 		converter.Get(),
-		mspBitmap.ReleaseAndGetAddressOf()
+		mpBitmap.ReleaseAndGetAddressOf()
 	);
 	ThrowIfFailed(hr);
 
 	return S_OK;
 }
+*/
 
 void Actor::Draw(float x, float y, float opacity)
 {
 	auto pRT = mpFramework->GetRenderTarget();
-	auto size = mspBitmap->GetPixelSize();
+	auto size = mpBitmap->GetPixelSize();
 	D2D1_RECT_F rect{ x, y, 
 		static_cast<float>(x + size.width), 
 		static_cast<float>(y + size.height)
@@ -92,7 +95,7 @@ void Actor::Draw(float x, float y, float opacity)
 
 
 	pRT->DrawBitmap(
-		mspBitmap.Get(),
+		mpBitmap,
 		rect,
 		opacity
 	);

@@ -129,12 +129,16 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorExample.cpp" />
+    <ClCompile Include="BitmapManager.cpp" />
+    <ClCompile Include="ComException.cpp" />
     <ClCompile Include="D2DFramework.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorExample.h" />
+    <ClInclude Include="BitmapManager.h" />
+    <ClInclude Include="ComException.h" />
     <ClInclude Include="D2DFramework.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

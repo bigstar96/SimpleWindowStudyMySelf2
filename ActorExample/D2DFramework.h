@@ -2,31 +2,8 @@
 
 #include <d2d1.h>
 #include <wrl/client.h>
-#include <exception>
-#include <sstream>
-#include <wincodec.h>
+#include "ComException.h"
 
-class com_exception : public std::exception
-{
-private:
-	HRESULT mResult;
-
-public:
-	com_exception(HRESULT hr) : mResult{ hr }
-	{
-	}
-
-	virtual const char* what() const override
-	{
-		std::stringstream ss;
-		ss << "Failure with Code : " <<
-			mResult << std::endl;
-
-		return ss.str().c_str();
-	}
-};
-
-inline void ThrowIfFailed(HRESULT hr);
 
 class D2DFramework
 {
@@ -35,7 +12,6 @@ private:
 
 protected:
 	HWND mHwnd;
-	Microsoft::WRL::ComPtr<IWICImagingFactory>		mspWICFactory{};
 	Microsoft::WRL::ComPtr<ID2D1Factory>			mspD2DFactory{};
 	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget>	mspRenderTarget;
 	
@@ -57,6 +33,5 @@ public:
 
 public:
 	ID2D1HwndRenderTarget* GetRenderTarget() { return mspRenderTarget.Get(); }
-	IWICImagingFactory* GetWICFactory() { return mspWICFactory.Get(); }
 };
 
