@@ -13,7 +13,7 @@ protected:
 	float mOpacity;
 
 public:
-	Actor() = delete;
+	Actor() = default;
 	Actor(D2DFramework* pFramework, LPCWSTR filename);
 	Actor(D2DFramework* pFramework, LPCWSTR filename, float x, float y, float opacity = 1.0f);
 

@@ -1,7 +1,7 @@
 #include <Windows.h>
-#include "D2DFramework.h"
+#include "BuggyHouse.h"
 
-D2DFramework myFramework;
+BuggyHouse myFramework;
 
 
 int WINAPI WinMain(
